@@ -19,7 +19,12 @@ namespace Snowflake
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
 
-        private Texture2D crate;
+        VertexBuffer vertexBuffer;
+
+        BasicEffect basicEffect;
+        Matrix world = Matrix.CreateTranslation(0, 0, 0);
+        Matrix view = Matrix.CreateLookAt(new Vector3(0, 0, 3), new Vector3(0, 0, 0), new Vector3(0, 1, 0));
+        Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 800f / 480f, 0.01f, 100f);
  
         public Game1()
             : base()
@@ -50,7 +55,15 @@ namespace Snowflake
             // Create a new SpriteBatch, which can be used to draw textures.
             this.spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            this.crate = this.Content.Load<Texture2D>("Images/flake_0");
+            this.basicEffect = new BasicEffect(GraphicsDevice);
+
+            VertexPositionColor[] vertices = new VertexPositionColor[3];
+            vertices[0] = new VertexPositionColor(new Vector3(0, 1, 0), Color.Red);
+            vertices[1] = new VertexPositionColor(new Vector3(+0.5f, 0, 0), Color.Green);
+            vertices[2] = new VertexPositionColor(new Vector3(-0.5f, 0, 0), Color.Blue);
+
+            vertexBuffer = new VertexBuffer(GraphicsDevice, typeof(VertexPositionColor), 3, BufferUsage.WriteOnly);
+            vertexBuffer.SetData<VertexPositionColor>(vertices);
 
             // TODO: use this.Content to load your game content here
         }
@@ -85,13 +98,24 @@ namespace Snowflake
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
-            this.spriteBatch.Begin();
+            basicEffect.World = world;
+            basicEffect.View = view;
+            basicEffect.Projection = projection;
+            basicEffect.VertexColorEnabled = true;
 
-            this.spriteBatch.Draw(crate, new Vector2(200,200), Color.White);
+            GraphicsDevice.SetVertexBuffer(vertexBuffer);
 
-            this.spriteBatch.End();
+            RasterizerState rasterizerState = new RasterizerState();
+            rasterizerState.CullMode = CullMode.None;
+            GraphicsDevice.RasterizerState = rasterizerState;
+
+            foreach (EffectPass pass in basicEffect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+                GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, 0, 1);
+            }
 
             base.Draw(gameTime);
         }
