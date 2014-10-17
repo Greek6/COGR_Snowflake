@@ -50,7 +50,7 @@ namespace Snowflake
             // Create a new SpriteBatch, which can be used to draw textures.
             this.spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            this.crate = this.Content.Load<Texture2D>("Images/flake0");
+            this.crate = this.Content.Load<Texture2D>("Images/flake_0");
 
             // TODO: use this.Content to load your game content here
         }
