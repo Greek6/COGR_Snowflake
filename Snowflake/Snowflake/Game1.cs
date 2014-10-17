@@ -28,7 +28,7 @@ namespace Snowflake
         // P1: The position of the camera.
         // P2: The target towards which the camera is pointing.
         // P3: The direction that is "up" from the camera's point of view.
-        private Matrix view = Matrix.CreateLookAt(new Vector3(0, 0, 3), new Vector3(0, 0, 0), new Vector3(0, 1, 0));
+        private Matrix view = Matrix.CreateLookAt(new Vector3(0, 0, 3), Vector3.Zero, Vector3.Up);
         private Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 800f / 480f, 0.01f, 100f); // calculate aspect ratio
  
         public Game1()
@@ -90,7 +90,7 @@ namespace Snowflake
                 Exit();
 
             this.angle += 0.01;
-            this.view = Matrix.CreateLookAt(new Vector3(5*(float) Math.Sin(this.angle), -2, 5*(float) Math.Cos(angle)), new Vector3(0, 0, 0), new Vector3(0, 1, 0));
+            this.view = Matrix.CreateLookAt(new Vector3(5*(float) Math.Sin(this.angle), -2, 5*(float) Math.Cos(angle)), Vector3.Zero, Vector3.Up);
 
             base.Update(gameTime);
         }
