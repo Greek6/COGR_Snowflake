@@ -23,8 +23,12 @@ namespace Snowflake
 
         BasicEffect basicEffect;
         Matrix world = Matrix.CreateTranslation(0, 0, 0);
+        // Matrx.CreateLookAt
+        // P1: The position of the camera.
+        // P2: The target towards which the camera is pointing.
+        // P3: The direction that is "up" from the camera's point of view.
         Matrix view = Matrix.CreateLookAt(new Vector3(0, 0, 3), new Vector3(0, 0, 0), new Vector3(0, 1, 0));
-        Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 800f / 480f, 0.01f, 100f);
+        Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 800f / 480f, 0.01f, 100f); // calculate aspect ratio
  
         public Game1()
             : base()
@@ -64,8 +68,6 @@ namespace Snowflake
 
             vertexBuffer = new VertexBuffer(GraphicsDevice, typeof(VertexPositionColor), 3, BufferUsage.WriteOnly);
             vertexBuffer.SetData<VertexPositionColor>(vertices);
-
-            // TODO: use this.Content to load your game content here
         }
 
         /// <summary>
@@ -74,7 +76,6 @@ namespace Snowflake
         /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
         }
 
         /// <summary>
