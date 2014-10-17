@@ -19,16 +19,17 @@ namespace Snowflake
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
 
-        VertexBuffer vertexBuffer;
+        private double angle = 0;   // For rotating, will be deleted later
+        private VertexBuffer vertexBuffer;
 
-        BasicEffect basicEffect;
-        Matrix world = Matrix.CreateTranslation(0, 0, 0);
+        private BasicEffect basicEffect;
+        private Matrix world = Matrix.CreateTranslation(0, 0, 0);
         // Matrx.CreateLookAt
         // P1: The position of the camera.
         // P2: The target towards which the camera is pointing.
         // P3: The direction that is "up" from the camera's point of view.
-        Matrix view = Matrix.CreateLookAt(new Vector3(0, 0, 3), new Vector3(0, 0, 0), new Vector3(0, 1, 0));
-        Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 800f / 480f, 0.01f, 100f); // calculate aspect ratio
+        private Matrix view = Matrix.CreateLookAt(new Vector3(0, 0, 3), new Vector3(0, 0, 0), new Vector3(0, 1, 0));
+        private Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 800f / 480f, 0.01f, 100f); // calculate aspect ratio
  
         public Game1()
             : base()
@@ -45,7 +46,7 @@ namespace Snowflake
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            // Add initialization logic here
 
             base.Initialize();
         }
@@ -88,7 +89,8 @@ namespace Snowflake
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            this.angle += 0.01;
+            this.view = Matrix.CreateLookAt(new Vector3(5*(float) Math.Sin(this.angle), -2, 5*(float) Math.Cos(angle)), new Vector3(0, 0, 0), new Vector3(0, 1, 0));
 
             base.Update(gameTime);
         }
