@@ -16,14 +16,16 @@ namespace Snowflake
     /// </summary>
     public class Game1 : Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        private GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
 
+        private Texture2D crate;
+ 
         public Game1()
             : base()
         {
-            graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
+            this.graphics = new GraphicsDeviceManager(this);
+            this.Content.RootDirectory = "Content";
         }
 
         /// <summary>
@@ -46,7 +48,9 @@ namespace Snowflake
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            this.spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            this.crate = this.Content.Load<Texture2D>("Images/flake0");
 
             // TODO: use this.Content to load your game content here
         }
@@ -83,7 +87,11 @@ namespace Snowflake
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            this.spriteBatch.Begin();
+
+            this.spriteBatch.Draw(crate, new Vector2(200,200), Color.White);
+
+            this.spriteBatch.End();
 
             base.Draw(gameTime);
         }
