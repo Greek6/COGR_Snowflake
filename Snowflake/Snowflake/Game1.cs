@@ -65,10 +65,11 @@ namespace Snowflake
             this.basicEffect = new BasicEffect(GraphicsDevice);
 
             VertexPositionNormalTexture[] vertices = new VertexPositionNormalTexture[4];
-            vertices[0] = new VertexPositionNormalTexture(new Vector3(-0.5f, 0.5f, 0), Vector3.Backward, new Vector2(0,0));
-            vertices[1] = new VertexPositionNormalTexture(new Vector3( 0.5f, 0.5f, 0), Vector3.Backward, new Vector2(1,0));
-            vertices[2] = new VertexPositionNormalTexture(new Vector3( 0.5f,-0.5f, 0), Vector3.Backward, new Vector2(1,1));
-            vertices[3] = new VertexPositionNormalTexture(new Vector3(-0.5f,-0.5f, 0), Vector3.Backward, new Vector2(0,1));
+
+            vertices[0] = new VertexPositionNormalTexture(new Vector3(0f, 0f, 0), Vector3.Backward, new Vector2(0, 0));
+            vertices[1] = new VertexPositionNormalTexture(new Vector3(1f, 0f, 0), Vector3.Backward, new Vector2(1, 0));
+            vertices[2] = new VertexPositionNormalTexture(new Vector3(0f,-1f, 0), Vector3.Backward, new Vector2(0, 1));
+            vertices[3] = new VertexPositionNormalTexture(new Vector3(1f,-1f, 0), Vector3.Backward, new Vector2(1, 1));
 
             this.vertexBuffer = new VertexBuffer(GraphicsDevice, typeof(VertexPositionNormalTexture), 4, BufferUsage.WriteOnly);
             this.vertexBuffer.SetData<VertexPositionNormalTexture>(vertices);
@@ -106,7 +107,7 @@ namespace Snowflake
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.Aqua);
 
             this.basicEffect.World = world;
             this.basicEffect.View = view;
@@ -123,7 +124,7 @@ namespace Snowflake
             foreach (EffectPass pass in basicEffect.CurrentTechnique.Passes)
             {
                 pass.Apply();
-                GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, 0, 2);
+                GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleStrip, 0, 2);
             }
 
             base.Draw(gameTime);
