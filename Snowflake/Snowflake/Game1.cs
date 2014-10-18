@@ -22,6 +22,8 @@ namespace Snowflake
         private double angle = 0;   // For rotating, will be deleted later
         private VertexBuffer vertexBuffer;
 
+        private Texture2D texture;
+
         private BasicEffect basicEffect;
         private Matrix world = Matrix.CreateTranslation(0, 0, 0);
         // Matrx.CreateLookAt
@@ -62,13 +64,16 @@ namespace Snowflake
 
             this.basicEffect = new BasicEffect(GraphicsDevice);
 
-            VertexPositionColor[] vertices = new VertexPositionColor[3];
-            vertices[0] = new VertexPositionColor(new Vector3(0, 1, 0), Color.Red);
-            vertices[1] = new VertexPositionColor(new Vector3(+0.5f, 0, 0), Color.Green);
-            vertices[2] = new VertexPositionColor(new Vector3(-0.5f, 0, 0), Color.Blue);
+            VertexPositionNormalTexture[] vertices = new VertexPositionNormalTexture[4];
+            vertices[0] = new VertexPositionNormalTexture(new Vector3(-0.5f, 0.5f, 0), Vector3.Backward, new Vector2(0,0));
+            vertices[1] = new VertexPositionNormalTexture(new Vector3( 0.5f, 0.5f, 0), Vector3.Backward, new Vector2(1,0));
+            vertices[2] = new VertexPositionNormalTexture(new Vector3( 0.5f,-0.5f, 0), Vector3.Backward, new Vector2(1,1));
+            vertices[3] = new VertexPositionNormalTexture(new Vector3(-0.5f,-0.5f, 0), Vector3.Backward, new Vector2(0,1));
 
-            vertexBuffer = new VertexBuffer(GraphicsDevice, typeof(VertexPositionColor), 3, BufferUsage.WriteOnly);
-            vertexBuffer.SetData<VertexPositionColor>(vertices);
+            this.vertexBuffer = new VertexBuffer(GraphicsDevice, typeof(VertexPositionNormalTexture), 4, BufferUsage.WriteOnly);
+            this.vertexBuffer.SetData<VertexPositionNormalTexture>(vertices);
+
+            this.texture = this.Content.Load<Texture2D>("Images/flake_0");
         }
 
         /// <summary>
@@ -103,12 +108,13 @@ namespace Snowflake
         {
             GraphicsDevice.Clear(Color.Black);
 
-            basicEffect.World = world;
-            basicEffect.View = view;
-            basicEffect.Projection = projection;
-            basicEffect.VertexColorEnabled = true;
+            this.basicEffect.World = world;
+            this.basicEffect.View = view;
+            this.basicEffect.Projection = projection;
+            this.basicEffect.TextureEnabled = true;
+            this.basicEffect.Texture = this.texture;
 
-            GraphicsDevice.SetVertexBuffer(vertexBuffer);
+            GraphicsDevice.SetVertexBuffer(this.vertexBuffer);
 
             RasterizerState rasterizerState = new RasterizerState();
             rasterizerState.CullMode = CullMode.None;
@@ -117,7 +123,7 @@ namespace Snowflake
             foreach (EffectPass pass in basicEffect.CurrentTechnique.Passes)
             {
                 pass.Apply();
-                GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, 0, 1);
+                GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, 0, 2);
             }
 
             base.Draw(gameTime);
