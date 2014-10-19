@@ -10,6 +10,7 @@ namespace ComputerGraphics.Components
 
         public Camera()
         {
+            this.Initialize();
         }
 
         private void Initialize()

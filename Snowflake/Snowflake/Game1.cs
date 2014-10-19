@@ -41,7 +41,6 @@ namespace ComputerGraphics
 
             RasterizerState rasterizerState = new RasterizerState();
             rasterizerState.CullMode = CullMode.None;
-            rasterizerState.FillMode = FillMode.WireFrame;
             GraphicsDevice.RasterizerState = rasterizerState;
 
             base.Initialize();
