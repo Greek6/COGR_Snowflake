@@ -1,12 +1,9 @@
 ﻿#region Using Statements
 using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Storage;
-using Microsoft.Xna.Framework.GamerServices;
+
 #endregion
 
 namespace Snowflake
@@ -19,25 +16,21 @@ namespace Snowflake
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
 
+        private Camera camera;
+
         private double angle = 0;   // For rotating, will be deleted later
         private VertexBuffer vertexBuffer;
 
         private Texture2D texture;
 
         private BasicEffect basicEffect;
-        private Matrix world = Matrix.CreateTranslation(0, 0, 0);
-        // Matrx.CreateLookAt
-        // P1: The position of the camera.
-        // P2: The target towards which the camera is pointing.
-        // P3: The direction that is "up" from the camera's point of view.
-        private Matrix view = Matrix.CreateLookAt(new Vector3(0, 0, 3), Vector3.Zero, Vector3.Up);
-        private Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 800f / 480f, 0.01f, 100f); // calculate aspect ratio
  
         public Game1()
             : base()
         {
             this.graphics = new GraphicsDeviceManager(this);
             this.Content.RootDirectory = "Content";
+            this.camera = new Camera();
         }
 
         /// <summary>
@@ -95,9 +88,6 @@ namespace Snowflake
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            this.angle += 0.01;
-            this.view = Matrix.CreateLookAt(new Vector3(5*(float) Math.Sin(this.angle), -2, 5*(float) Math.Cos(angle)), Vector3.Zero, Vector3.Up);
-
             base.Update(gameTime);
         }
 
@@ -109,9 +99,10 @@ namespace Snowflake
         {
             GraphicsDevice.Clear(Color.Aqua);
 
-            this.basicEffect.World = world;
-            this.basicEffect.View = view;
-            this.basicEffect.Projection = projection;
+            // TODO: Set it somewhere else
+            this.basicEffect.World = this.camera.World;
+            this.basicEffect.View = this.camera.View;
+            this.basicEffect.Projection = this.camera.Projection;
             this.basicEffect.TextureEnabled = true;
             this.basicEffect.Texture = this.texture;
 
