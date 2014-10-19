@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace Snowflake
+namespace ComputerGraphics.Components
 {
     public class Camera
     {
@@ -9,6 +9,10 @@ namespace Snowflake
         public Matrix Projection { get; private set; }
 
         public Camera()
+        {
+        }
+
+        private void Initialize()
         {
             this.World = Matrix.CreateTranslation(0, 0, 0);
             // Matrx.CreateLookAt

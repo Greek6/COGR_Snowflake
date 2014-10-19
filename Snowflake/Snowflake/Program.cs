@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 #endregion
 
-namespace Snowflake
+namespace ComputerGraphics
 {
 #if WINDOWS || LINUX
     /// <summary>

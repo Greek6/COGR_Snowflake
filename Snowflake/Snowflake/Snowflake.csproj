@@ -50,8 +50,10 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Camera.cs" />
+    <Compile Include="Components\Camera.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="Objects\Quad.cs" />
+    <Compile Include="Objects\Snowflake.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

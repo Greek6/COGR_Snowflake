@@ -1,12 +1,14 @@
 ﻿#region Using Statements
 using System;
+using ComputerGraphics.Components;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using ComputerGraphics.Objects;
 
 #endregion
 
-namespace Snowflake
+namespace ComputerGraphics
 {
     /// <summary>
     /// This is the main type for your game
@@ -15,15 +17,9 @@ namespace Snowflake
     {
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
-
         private Camera camera;
 
-        private double angle = 0;   // For rotating, will be deleted later
-        private VertexBuffer vertexBuffer;
-
-        private Texture2D texture;
-
-        private BasicEffect basicEffect;
+        private Snowflake snowflake;
  
         public Game1()
             : base()
@@ -43,6 +39,11 @@ namespace Snowflake
         {
             // Add initialization logic here
 
+            RasterizerState rasterizerState = new RasterizerState();
+            rasterizerState.CullMode = CullMode.None;
+            rasterizerState.FillMode = FillMode.WireFrame;
+            GraphicsDevice.RasterizerState = rasterizerState;
+
             base.Initialize();
         }
 
@@ -55,19 +56,7 @@ namespace Snowflake
             // Create a new SpriteBatch, which can be used to draw textures.
             this.spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            this.basicEffect = new BasicEffect(GraphicsDevice);
-
-            VertexPositionNormalTexture[] vertices = new VertexPositionNormalTexture[4];
-
-            vertices[0] = new VertexPositionNormalTexture(new Vector3(0f, 0f, 0), Vector3.Backward, new Vector2(0, 0));
-            vertices[1] = new VertexPositionNormalTexture(new Vector3(1f, 0f, 0), Vector3.Backward, new Vector2(1, 0));
-            vertices[2] = new VertexPositionNormalTexture(new Vector3(0f,-1f, 0), Vector3.Backward, new Vector2(0, 1));
-            vertices[3] = new VertexPositionNormalTexture(new Vector3(1f,-1f, 0), Vector3.Backward, new Vector2(1, 1));
-
-            this.vertexBuffer = new VertexBuffer(GraphicsDevice, typeof(VertexPositionNormalTexture), 4, BufferUsage.WriteOnly);
-            this.vertexBuffer.SetData<VertexPositionNormalTexture>(vertices);
-
-            this.texture = this.Content.Load<Texture2D>("Images/flake_0");
+            this.snowflake = new Snowflake(GraphicsDevice, this.Content, this.camera);
         }
 
         /// <summary>
@@ -99,24 +88,7 @@ namespace Snowflake
         {
             GraphicsDevice.Clear(Color.Aqua);
 
-            // TODO: Set it somewhere else
-            this.basicEffect.World = this.camera.World;
-            this.basicEffect.View = this.camera.View;
-            this.basicEffect.Projection = this.camera.Projection;
-            this.basicEffect.TextureEnabled = true;
-            this.basicEffect.Texture = this.texture;
-
-            GraphicsDevice.SetVertexBuffer(this.vertexBuffer);
-
-            RasterizerState rasterizerState = new RasterizerState();
-            rasterizerState.CullMode = CullMode.None;
-            GraphicsDevice.RasterizerState = rasterizerState;
-
-            foreach (EffectPass pass in basicEffect.CurrentTechnique.Passes)
-            {
-                pass.Apply();
-                GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleStrip, 0, 2);
-            }
+            this.snowflake.Draw();
 
             base.Draw(gameTime);
         }
