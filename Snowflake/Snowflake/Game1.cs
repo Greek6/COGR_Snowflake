@@ -1,6 +1,7 @@
 ﻿#region Using Statements
 using System;
 using ComputerGraphics.Components;
+using ComputerGraphics.Infrastructure;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -15,18 +16,16 @@ namespace ComputerGraphics
     /// </summary>
     public class Game1 : Game
     {
-        private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
-        private Camera camera;
 
         private Snowflake snowflake;
  
         public Game1()
             : base()
         {
-            this.graphics = new GraphicsDeviceManager(this);
             this.Content.RootDirectory = "Content";
-            this.camera = new Camera();
+
+            ApplicationCore.Initialization(new GraphicsDeviceManager(this), this.Content, new Camera());
         }
 
         /// <summary>
@@ -53,9 +52,9 @@ namespace ComputerGraphics
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-            this.spriteBatch = new SpriteBatch(GraphicsDevice);
+            this.spriteBatch = new SpriteBatch(ApplicationCore.Singleton.GraphicsDevice);
 
-            this.snowflake = new Snowflake(GraphicsDevice, this.Content, this.camera);
+            this.snowflake = new Snowflake();
         }
 
         /// <summary>

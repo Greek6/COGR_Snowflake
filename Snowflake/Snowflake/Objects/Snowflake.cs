@@ -1,5 +1,5 @@
 ﻿using ComputerGraphics.Components;
-using Microsoft.Xna.Framework;
+using ComputerGraphics.Infrastructure;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -14,18 +14,18 @@ namespace ComputerGraphics.Objects
 
         private BasicEffect basicEffect;
 
-        public Snowflake(GraphicsDevice graphicsDevice, ContentManager contentManager, Camera camera)
+        public Snowflake()
         {
-            this.graphicsDevice = graphicsDevice;
-            this.contentManager = contentManager;
-            this.camera = camera;
+            this.graphicsDevice = ApplicationCore.Singleton.GraphicsDevice;
+            this.contentManager = ApplicationCore.Singleton.ContentManager;
+            this.camera = ApplicationCore.Singleton.Camera;
 
             this.Initialize();
         }
 
         private void Initialize()
         {
-            this.quad = new Quad(this.graphicsDevice, 1f);
+            this.quad = new Quad(1f);
             this.basicEffect = new BasicEffect(this.graphicsDevice);
 
             this.basicEffect.World = this.camera.World;

@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Components\Camera.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="Infrastructure\ApplicationCore.cs" />
     <Compile Include="Objects\Quad.cs" />
     <Compile Include="Objects\Snowflake.cs" />
     <Compile Include="Program.cs" />
