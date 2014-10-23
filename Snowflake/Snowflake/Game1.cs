@@ -36,7 +36,7 @@ namespace ComputerGraphics
         /// </summary>
         protected override void Initialize()
         {
-            // Add initialization logic here
+            GraphicsDevice.BlendState = BlendState.AlphaBlend;
 
             RasterizerState rasterizerState = new RasterizerState();
             rasterizerState.CullMode = CullMode.None;
