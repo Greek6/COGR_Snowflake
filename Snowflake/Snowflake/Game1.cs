@@ -1,5 +1,7 @@
 ﻿#region Using Statements
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using ComputerGraphics.Components;
 using ComputerGraphics.Infrastructure;
 using Microsoft.Xna.Framework;
@@ -18,13 +20,12 @@ namespace ComputerGraphics
     {
         private SpriteBatch spriteBatch;
 
-        private Snowflake snowflake;
+        private List<Snowflake> snowflakes;
  
         public Game1()
             : base()
         {
             this.Content.RootDirectory = "Content";
-
             ApplicationCore.Initialization(new GraphicsDeviceManager(this), this.Content, new Camera());
         }
 
@@ -54,7 +55,11 @@ namespace ComputerGraphics
             // Create a new SpriteBatch, which can be used to draw textures.
             this.spriteBatch = new SpriteBatch(ApplicationCore.Singleton.GraphicsDevice);
 
-            this.snowflake = new Snowflake();
+            this.snowflakes = new List<Snowflake>();
+            for (int i = 0; i < 1000; ++i)
+            {
+                this.snowflakes.Add(new Snowflake());
+            }            
         }
 
         /// <summary>
@@ -74,7 +79,11 @@ namespace ComputerGraphics
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
+            
+            Parallel.For((int)0, (int)snowflakes.Count, i =>
+            {
+                this.snowflakes[i].Update(gameTime);
+            });
             base.Update(gameTime);
         }
 
@@ -86,8 +95,10 @@ namespace ComputerGraphics
         {
             GraphicsDevice.Clear(Color.Aqua);
 
-            this.snowflake.Draw();
-
+            snowflakes.ForEach(delegate(Snowflake flake)
+            {
+                flake.Draw();
+            });
             base.Draw(gameTime);
         }
     }

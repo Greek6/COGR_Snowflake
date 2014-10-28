@@ -1,5 +1,7 @@
-﻿using ComputerGraphics.Components;
+﻿using System;
+using ComputerGraphics.Components;
 using ComputerGraphics.Infrastructure;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -14,6 +16,8 @@ namespace ComputerGraphics.Objects
 
         private BasicEffect basicEffect;
 
+        private static Random random = new Random(42 << 1); // nice random seed? :)
+
         public Snowflake()
         {
             this.graphicsDevice = ApplicationCore.Singleton.GraphicsDevice;
@@ -25,7 +29,8 @@ namespace ComputerGraphics.Objects
 
         private void Initialize()
         {
-            this.quad = new Quad(1f);
+            Vector3 pos = new Vector3((float)(Snowflake.random.NextDouble() * 40 - 20), (float)(Snowflake.random.NextDouble() * 20 + 10), -15f);
+            this.quad = new Quad(1f, pos, Quad.Orientation.ORIENTATION_XY);
             this.basicEffect = new BasicEffect(this.graphicsDevice);
 
             this.basicEffect.World = this.camera.World;
@@ -34,19 +39,32 @@ namespace ComputerGraphics.Objects
             this.basicEffect.TextureEnabled = true;
 
             // TODO: Rework here
-            Texture2D texture = this.contentManager.Load<Texture2D>("Images/flake_0");
+            Texture2D texture = this.contentManager.Load<Texture2D>("Images/flake_1");
             this.basicEffect.Texture = texture;
         }
 
         public void Draw()
         {
             this.graphicsDevice.SetVertexBuffer(this.quad.VertexBuffer);
-
             foreach (EffectPass pass in this.basicEffect.CurrentTechnique.Passes)
             {
                 pass.Apply();
                 this.graphicsDevice.DrawPrimitives(PrimitiveType.TriangleStrip, 0, 2);
             }
+        }
+
+        public void Update(GameTime gameTime)
+        {
+            double time = gameTime.ElapsedGameTime.TotalSeconds;
+            Vector3 newPos = this.quad.getPosition() - (new Vector3(0f, (float)time, 0f));
+
+            if (newPos.Y < -7.5)
+            {
+                newPos.Y = 10;
+            }
+
+            this.quad.setPositon(newPos);
+            this.quad.Update(gameTime);
         }
     }
 }
