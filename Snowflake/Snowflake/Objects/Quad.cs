@@ -22,8 +22,7 @@ namespace ComputerGraphics.Objects
 
         public void setPositon(Vector3 pos)
         {
-            this.Position = pos;
-            //this.Initialize();
+            this.Position = pos;            
         }
 
         public Vector3 getPosition()
@@ -77,14 +76,13 @@ namespace ComputerGraphics.Objects
                     vec3 += new Vector3(0f, -half_length, +half_length);
                     break;
                 default:
-                    //throw System.Exception("Orientation not valid");
                     return;
             }
 
             vertices[0] = new VertexPositionNormalTexture(vec0, Vector3.Backward, new Vector2(0, 0));
-            vertices[1] = new VertexPositionNormalTexture(vec1, Vector3.Backward, new Vector2(Math.Abs(this.SideLenght), 0));
-            vertices[2] = new VertexPositionNormalTexture(vec2, Vector3.Backward, new Vector2(0, Math.Abs(this.SideLenght)));
-            vertices[3] = new VertexPositionNormalTexture(vec3, Vector3.Backward, new Vector2(Math.Abs(this.SideLenght), Math.Abs(this.SideLenght)));
+            vertices[1] = new VertexPositionNormalTexture(vec1, Vector3.Backward, new Vector2(1, 0));
+            vertices[2] = new VertexPositionNormalTexture(vec2, Vector3.Backward, new Vector2(0, 1));
+            vertices[3] = new VertexPositionNormalTexture(vec3, Vector3.Backward, new Vector2(1, 1));
 
             this.VertexBuffer.SetData<VertexPositionNormalTexture>(vertices);
         }

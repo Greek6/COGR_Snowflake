@@ -30,7 +30,7 @@ namespace ComputerGraphics.Objects
         private void Initialize()
         {
             Vector3 pos = new Vector3((float)(Snowflake.random.NextDouble() * 40 - 20), (float)(Snowflake.random.NextDouble() * 20 + 10), -15f);
-            this.quad = new Quad(1f, pos, Quad.Orientation.ORIENTATION_XY);
+            this.quad = new Quad(0.3f, pos, Quad.Orientation.ORIENTATION_XY);
             this.basicEffect = new BasicEffect(this.graphicsDevice);
 
             this.basicEffect.World = this.camera.World;
