@@ -1,47 +1,53 @@
 ﻿using System;
+using ComputerGraphics.Components;
 using ComputerGraphics.Infrastructure;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace ComputerGraphics.Objects
 {
     public class Quad
     {
-        public enum Orientation
+        public enum QuadType
         {
-            ORIENTATION_XY, ORIENTATION_XZ, ORIENTATION_YZ
+            STATIC_ORIENTATION_XY, STATIC_ORIENTATION_XZ, STATIC_ORIENTATION_YZ, BILLBOARD
         }
+
+
+        private GraphicsDevice graphicsDevice;
+        private ContentManager contentManager;
+        private Camera camera;
+        private BasicEffect basicEffect;
 
 
         public float SideLenght { get; private set; }
         //public VertexBuffer VertexBuffer { get; private set; }
         public DynamicVertexBuffer VertexBuffer { get; private set; }
-        
-        private Vector3 Position;
-        private Orientation Ori;
 
-        public void setPositon(Vector3 pos)
-        {
-            this.Position = pos;            
-        }
+        public Vector3 Position { get; set; }
+        private QuadType Type;
 
-        public Vector3 getPosition()
-        {
-            return this.Position;
-        }
-
-
-        public Quad(float sideLenght, Vector3 position, Orientation ori)
+        public Quad(float sideLenght, Vector3 position, QuadType quadType, String texturePath) 
         {
             this.SideLenght = sideLenght;
             this.Position = position;
-            this.Ori = ori;
-            this.Initialize();
-        }
+            this.Type = quadType;
+            this.VertexBuffer = new DynamicVertexBuffer(ApplicationCore.Singleton.GraphicsDevice, typeof(VertexPositionNormalTexture), 4, BufferUsage.WriteOnly);   
 
-        private void Initialize()
-        {
-            this.VertexBuffer = new DynamicVertexBuffer(ApplicationCore.Singleton.GraphicsDevice, typeof(VertexPositionNormalTexture), 4, BufferUsage.WriteOnly);            
+            this.graphicsDevice = ApplicationCore.Singleton.GraphicsDevice;
+            this.contentManager = ApplicationCore.Singleton.ContentManager;
+            this.camera = ApplicationCore.Singleton.Camera;
+
+            this.basicEffect = new BasicEffect(this.graphicsDevice);
+
+            this.basicEffect.World = this.camera.World;
+            this.basicEffect.View = this.camera.View;
+            this.basicEffect.Projection = this.camera.Projection;
+            this.basicEffect.TextureEnabled = true;
+
+            Texture2D texture = this.contentManager.Load<Texture2D>(texturePath);
+            this.basicEffect.Texture = texture;
         }
 
         public void Update(GameTime gameTime)
@@ -55,21 +61,21 @@ namespace ComputerGraphics.Objects
             Vector3 vec2 = Position;
             Vector3 vec3 = Position;
 
-            switch (this.Ori)
+            switch (this.Type)
             {
-                case Orientation.ORIENTATION_XY:
+                case QuadType.STATIC_ORIENTATION_XY:
                     vec0 += new Vector3(-half_length, +half_length, 0f);
                     vec1 += new Vector3(+half_length, +half_length, 0f);
                     vec2 += new Vector3(-half_length, -half_length, 0f);
                     vec3 += new Vector3(+half_length, -half_length, 0f);
                     break;
-                case Orientation.ORIENTATION_XZ:
+                case QuadType.STATIC_ORIENTATION_XZ:
                     vec0 += new Vector3(-half_length, 0f, +half_length);
                     vec1 += new Vector3(+half_length, 0f, +half_length);
                     vec2 += new Vector3(-half_length, 0f, -half_length);
                     vec3 += new Vector3(+half_length, 0f, -half_length);
                     break;
-                case Orientation.ORIENTATION_YZ:
+                case QuadType.STATIC_ORIENTATION_YZ:
                     vec0 += new Vector3(0f, +half_length, -half_length);
                     vec1 += new Vector3(0f, +half_length, +half_length);
                     vec2 += new Vector3(0f, -half_length, -half_length);
@@ -85,6 +91,17 @@ namespace ComputerGraphics.Objects
             vertices[3] = new VertexPositionNormalTexture(vec3, Vector3.Backward, new Vector2(1, 1));
 
             this.VertexBuffer.SetData<VertexPositionNormalTexture>(vertices);
+        }
+
+
+        public void Draw()
+        {
+            this.graphicsDevice.SetVertexBuffer(this.VertexBuffer);
+            foreach (EffectPass pass in this.basicEffect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+                this.graphicsDevice.DrawPrimitives(PrimitiveType.TriangleStrip, 0, 2);
+            }
         }
     }
 }
