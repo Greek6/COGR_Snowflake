@@ -17,6 +17,7 @@ namespace ComputerGraphics.Objects
         private BasicEffect basicEffect;
 
         private static Random random = new Random(42 << 1); // nice random seed? :)
+        private const int num_textures = 10;
 
         public Snowflake()
         {
@@ -29,8 +30,9 @@ namespace ComputerGraphics.Objects
 
         private void Initialize()
         {
-            Vector3 pos = new Vector3((float)(Snowflake.random.NextDouble() * 40 - 20), (float)(Snowflake.random.NextDouble() * 20 + 10), -15f);
-            this.quad = new Quad(0.3f, pos, Quad.Orientation.ORIENTATION_XY);
+            Vector3 pos = new Vector3((float) (Snowflake.random.NextDouble()*40 - 20),
+                (float) (Snowflake.random.NextDouble()*20 + 10), -15f);
+            this.quad = new Quad(1f, pos, Quad.Orientation.ORIENTATION_XY);
             this.basicEffect = new BasicEffect(this.graphicsDevice);
 
             this.basicEffect.World = this.camera.World;
@@ -39,7 +41,44 @@ namespace ComputerGraphics.Objects
             this.basicEffect.TextureEnabled = true;
 
             // TODO: Rework here
-            Texture2D texture = this.contentManager.Load<Texture2D>("Images/flake_1");
+            Texture2D texture;
+            #region random texture
+            switch ((int)(Snowflake.random.NextDouble() * Snowflake.num_textures))
+            {
+                case 0:
+                    texture = this.contentManager.Load<Texture2D>("Images/flake_0");
+                    break;
+                case 1:
+                    texture = this.contentManager.Load<Texture2D>("Images/flake_1");
+                    break;
+                case 2:
+                    texture = this.contentManager.Load<Texture2D>("Images/flake_2");
+                    break;
+                case 3:
+                    //texture = this.contentManager.Load<Texture2D>("Images/flake_3");  // windows crash using this texture
+                    //break;
+                case 4:
+                    texture = this.contentManager.Load<Texture2D>("Images/flake_4");
+                    break;
+                case 5:
+                    texture = this.contentManager.Load<Texture2D>("Images/flake_5");
+                    break;
+                case 6:
+                    //texture = this.contentManager.Load<Texture2D>("Images/flake_6");  // windows crash using this texture
+                    //break;
+                case 7:
+                    texture = this.contentManager.Load<Texture2D>("Images/flake_7");
+                    break;
+                case 8:
+                    //texture = this.contentManager.Load<Texture2D>("Images/flake_8");  // windows crash using this texture
+                    //break;
+                case 9:
+                    texture = this.contentManager.Load<Texture2D>("Images/flake_9");
+                    break;
+                default:
+                    throw new Exception("Error in function Snowflake.Initialize()");
+            }    
+            #endregion
             this.basicEffect.Texture = texture;
         }
 
