@@ -21,7 +21,7 @@ namespace ComputerGraphics.Objects
 
             // TODO: Rework here
             String texture;
-            #region random texture
+            #region select random texture
             switch ((int)(Snowflake.random.NextDouble() * Snowflake.num_textures))
             {
                 case 0:
@@ -77,7 +77,7 @@ namespace ComputerGraphics.Objects
             }
 
             this.quad.Position = newPos;
-            this.quad.Update(gameTime);
+            this.quad.Update();
         }
     }
 }

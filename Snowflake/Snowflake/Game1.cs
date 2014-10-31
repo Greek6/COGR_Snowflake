@@ -19,14 +19,14 @@ namespace ComputerGraphics
     public class Game1 : Game
     {
         private SpriteBatch spriteBatch;
-
+        private SkyBox skybox;
         private List<Snowflake> snowflakes;
  
         public Game1()
             : base()
         {
             this.Content.RootDirectory = "Content";
-            ApplicationCore.Initialization(new GraphicsDeviceManager(this), this.Content, new Camera());
+            ApplicationCore.Initialization(new GraphicsDeviceManager(this), this.Content, new Camera());        
         }
 
         /// <summary>
@@ -59,7 +59,9 @@ namespace ComputerGraphics
             for (int i = 0; i < 1000; ++i)
             {
                 this.snowflakes.Add(new Snowflake());
-            }            
+            }
+    
+            //this.skybox = new SkyBox(35f);
         }
 
         /// <summary>
@@ -94,6 +96,7 @@ namespace ComputerGraphics
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
+            //this.skybox.Draw();
             snowflakes.ForEach(delegate(Snowflake flake)
             {
                 flake.Draw();

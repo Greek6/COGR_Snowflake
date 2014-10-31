@@ -24,7 +24,6 @@ namespace ComputerGraphics.Objects
         public float SideLenght { get; private set; }
         //public VertexBuffer VertexBuffer { get; private set; }
         public DynamicVertexBuffer VertexBuffer { get; private set; }
-
         public Vector3 Position { get; set; }
         private QuadType Type;
 
@@ -39,18 +38,19 @@ namespace ComputerGraphics.Objects
             this.contentManager = ApplicationCore.Singleton.ContentManager;
             this.camera = ApplicationCore.Singleton.Camera;
 
-            this.basicEffect = new BasicEffect(this.graphicsDevice);
-
-            this.basicEffect.World = this.camera.World;
-            this.basicEffect.View = this.camera.View;
-            this.basicEffect.Projection = this.camera.Projection;
-            this.basicEffect.TextureEnabled = true;
+            this.basicEffect = new BasicEffect(this.graphicsDevice)
+            {
+                World = this.camera.World,
+                View = this.camera.View,
+                Projection = this.camera.Projection,
+                TextureEnabled = true
+            };
 
             Texture2D texture = this.contentManager.Load<Texture2D>(texturePath);
             this.basicEffect.Texture = texture;
         }
 
-        public void Update(GameTime gameTime)
+        public void Update()
         {
             VertexPositionNormalTexture[] vertices = new VertexPositionNormalTexture[4];
 
@@ -81,6 +81,7 @@ namespace ComputerGraphics.Objects
                     vec2 += new Vector3(0f, -half_length, -half_length);
                     vec3 += new Vector3(0f, -half_length, +half_length);
                     break;
+                case QuadType.BILLBOARD:    // TODO
                 default:
                     return;
             }
@@ -92,7 +93,6 @@ namespace ComputerGraphics.Objects
 
             this.VertexBuffer.SetData<VertexPositionNormalTexture>(vertices);
         }
-
 
         public void Draw()
         {
