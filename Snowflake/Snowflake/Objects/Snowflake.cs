@@ -30,7 +30,7 @@ namespace ComputerGraphics.Objects
 
         private void Initialize()
         {
-            this.quad = new Quad(1f);
+            this.quad = new Quad(0.5f);
             this.basicEffect = new BasicEffect(this.graphicsDevice);
 
             this.basicEffect.World = this.camera.World;
