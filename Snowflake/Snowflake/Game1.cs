@@ -1,7 +1,5 @@
 ﻿#region Using Statements
 using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using ComputerGraphics.Components;
 using ComputerGraphics.Infrastructure;
 using Microsoft.Xna.Framework;
@@ -19,14 +17,15 @@ namespace ComputerGraphics
     public class Game1 : Game
     {
         private SpriteBatch spriteBatch;
-        private SkyBox skybox;
-        private List<Snowflake> snowflakes;
+
+        private Cloud cloud;
  
         public Game1()
             : base()
         {
             this.Content.RootDirectory = "Content";
-            ApplicationCore.Initialization(new GraphicsDeviceManager(this), this.Content, new Camera());        
+
+            ApplicationCore.Initialization(new GraphicsDeviceManager(this), this.Content, new Camera());
         }
 
         /// <summary>
@@ -55,13 +54,7 @@ namespace ComputerGraphics
             // Create a new SpriteBatch, which can be used to draw textures.
             this.spriteBatch = new SpriteBatch(ApplicationCore.Singleton.GraphicsDevice);
 
-            this.snowflakes = new List<Snowflake>();
-            for (int i = 0; i < 1000; ++i)
-            {
-                this.snowflakes.Add(new Snowflake());
-            }
-    
-            //this.skybox = new SkyBox(35f);
+            this.cloud = new Cloud();
         }
 
         /// <summary>
@@ -81,11 +74,10 @@ namespace ComputerGraphics
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            
-            Parallel.For((int)0, (int)snowflakes.Count, i =>
-            {
-                this.snowflakes[i].Update(gameTime);
-            });
+
+            ApplicationCore.Singleton.Camera.Update();
+            this.cloud.Update();
+
             base.Update(gameTime);
         }
 
@@ -95,12 +87,10 @@ namespace ComputerGraphics
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
-            //this.skybox.Draw();
-            snowflakes.ForEach(delegate(Snowflake flake)
-            {
-                flake.Draw();
-            });
+            GraphicsDevice.Clear(Color.Aqua);
+
+            this.cloud.Draw();
+
             base.Draw(gameTime);
         }
     }

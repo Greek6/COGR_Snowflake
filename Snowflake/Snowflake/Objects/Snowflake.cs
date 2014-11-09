@@ -9,75 +9,57 @@ namespace ComputerGraphics.Objects
 {
     public class Snowflake
     {
+        private GraphicsDevice graphicsDevice;
+        private ContentManager contentManager;
+        private Camera camera;
         private Quad quad;
+        private float angle;
+        private Vector3 position;
 
-        private static Random random = new Random(42 << 1); // nice random seed? :)
-        private const int num_textures = 10;
+        private BasicEffect basicEffect;
 
-        public Snowflake()
+        public Snowflake(Vector3 position)
         {
-            Vector3 pos = new Vector3((float)(Snowflake.random.NextDouble() * 40 - 20),
-               (float)(Snowflake.random.NextDouble() * 20 + 10), -15f);
+            this.graphicsDevice = ApplicationCore.Singleton.GraphicsDevice;
+            this.contentManager = ApplicationCore.Singleton.ContentManager;
+            this.camera = ApplicationCore.Singleton.Camera;
+            this.position = position;
+
+            this.Initialize();
+        }
+
+        private void Initialize()
+        {
+            this.quad = new Quad(1f);
+            this.basicEffect = new BasicEffect(this.graphicsDevice);
+
+            this.basicEffect.World = this.camera.World;
+            this.basicEffect.View = this.camera.View;
+            this.basicEffect.Projection = this.camera.Projection;
+            this.basicEffect.TextureEnabled = true;
 
             // TODO: Rework here
-            String texture;
-            #region select random texture
-            switch ((int)(Snowflake.random.NextDouble() * Snowflake.num_textures))
-            {
-                case 0:
-                    texture = "Images/flake_0";
-                    break;
-                case 1:
-                    texture = "Images/flake_1";
-                    break;
-                case 2:
-                    texture = "Images/flake_2";
-                    break;
-                case 3:
-                //texture = "Images/flake_3";  // windows crash using this texture
-                //break;
-                case 4:
-                    texture = "Images/flake_4";
-                    break;
-                case 5:
-                    texture = "Images/flake_5";
-                    break;
-                case 6:
-                //texture = "Images/flake_6";  // windows crash using this texture
-                //break;
-                case 7:
-                    texture = "Images/flake_7";
-                    break;
-                case 8:
-                //texture = "Images/flake_8";  // windows crash using this texture
-                //break;
-                case 9:
-                    texture = "Images/flake_9";
-                    break;
-                default:
-                    throw new Exception("Error in function Snowflake.Initialize()");
-            }
-            #endregion
-            this.quad = new Quad(1f, pos, Quad.QuadType.STATIC_ORIENTATION_XY, texture);
+            Texture2D texture = this.contentManager.Load<Texture2D>("Images/flake_0");
+            this.basicEffect.Texture = texture;
+        }
+
+        public void Update()
+        {
+            this.basicEffect.View = this.camera.View;
+            position -= new Vector3(0, 0.01f, 0);
+            angle += 0.1f;
+            this.basicEffect.World = Matrix.CreateRotationY(angle) * Matrix.CreateTranslation(position);
         }
 
         public void Draw()
         {
-            this.quad.Draw();
-        }
+            this.graphicsDevice.SetVertexBuffer(this.quad.VertexBuffer);
 
-        public void Update(GameTime gameTime)
-        {
-            double time = gameTime.ElapsedGameTime.TotalSeconds;
-            Vector3 newPos = this.quad.Position - (new Vector3(0f, (float)time, 0f));
-
-            if (newPos.Y < -7.5)
+            foreach (EffectPass pass in this.basicEffect.CurrentTechnique.Passes)
             {
-                newPos.Y = 10;
+                pass.Apply();
+                this.graphicsDevice.DrawPrimitives(PrimitiveType.TriangleStrip, 0, 2);
             }
-
-            this.quad.Position = newPos;
-            this.quad.Update();
         }
     }
 }
