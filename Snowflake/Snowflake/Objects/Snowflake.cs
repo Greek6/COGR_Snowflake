@@ -78,7 +78,7 @@ namespace ComputerGraphics.Objects
         public void Update()
         {
             this.basicEffect.View = this.camera.View;
-            position -= new Vector3(0f, 0.01f, 0f);
+            position -= new Vector3(0f, this.mass, 0f); // not correct but a bit randomness
             angle += 0.1f;
             this.basicEffect.World = /* Matrix.CreateRotationX(angle) */ Matrix.CreateTranslation(position);
         }
