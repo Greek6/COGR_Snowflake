@@ -53,7 +53,6 @@ namespace ComputerGraphics
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             this.spriteBatch = new SpriteBatch(ApplicationCore.Singleton.GraphicsDevice);
-
             this.cloud = new Cloud();
         }
 
@@ -73,7 +72,7 @@ namespace ComputerGraphics
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+                this.Exit();
 
             ApplicationCore.Singleton.Camera.Update();
             this.cloud.Update();
@@ -87,10 +86,8 @@ namespace ComputerGraphics
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Aqua);
-
+            GraphicsDevice.Clear(Color.Black);
             this.cloud.Draw();
-
             base.Draw(gameTime);
         }
     }

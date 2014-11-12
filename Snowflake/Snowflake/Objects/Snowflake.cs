@@ -8,29 +8,61 @@ using Microsoft.Xna.Framework.Graphics;
 namespace ComputerGraphics.Objects
 {
     public class Snowflake
-    {
-        private GraphicsDevice graphicsDevice;
-        private ContentManager contentManager;
-        private Camera camera;
-        private Quad quad;
-        private float angle;
+    {        
+        private static Random random = new Random();    // do not change to non staic member!
+        private const int numTextures = 10;
+        
         private Vector3 position;
+        private Quad quad;
 
+        private float fallRadius;        
+        private float mass;
+        private float angle;
+
+        private GraphicsDevice graphicsDevice = ApplicationCore.Singleton.GraphicsDevice;
+        private ContentManager contentManager = ApplicationCore.Singleton.ContentManager;       
+        private Camera camera                 = ApplicationCore.Singleton.Camera;
         private BasicEffect basicEffect;
 
-        public Snowflake(Vector3 position)
-        {
-            this.graphicsDevice = ApplicationCore.Singleton.GraphicsDevice;
-            this.contentManager = ApplicationCore.Singleton.ContentManager;
-            this.camera = ApplicationCore.Singleton.Camera;
-            this.position = position;
 
+        private static float CalculateDiameter(float temperature)
+        {
+            // paper section 2.1
+            float toReturn = 0.04f;
+            if (temperature <= -0.061f)
+            {
+                toReturn = 0.015f * (float) Math.Pow(-temperature, -0.35f);
+            }
+
+            return toReturn*(float) (Snowflake.random.NextDouble() + 0.5) * 10f /*decimeter meter*/;
+        }
+        
+        private static float CalculateMass(float temperature, float diameter)
+        {            
+            // paper section 2.1
+            float roh = 0.170f;
+            if (temperature > -1f)
+            {
+                roh = 0.740f;
+            }
+
+            // assumption:          snowflake is spherical
+            // volume of sphere:    4/3 * r^3 * pi
+            return 4f / 3f * (float)Math.Pow(diameter / 2, 3) * (float)Math.PI;
+        }
+
+        public Snowflake(Vector3 position, int snowflakeTemperature)
+        {
+            float diameter = Snowflake.CalculateDiameter(snowflakeTemperature);
+            this.mass      = Snowflake.CalculateMass    (snowflakeTemperature, diameter);
+            this.quad = new Quad(diameter);
+
+            this.position = position;
             this.Initialize();
         }
 
         private void Initialize()
         {
-            this.quad = new Quad(0.5f);
             this.basicEffect = new BasicEffect(this.graphicsDevice);
 
             this.basicEffect.World = this.camera.World;
@@ -39,16 +71,16 @@ namespace ComputerGraphics.Objects
             this.basicEffect.TextureEnabled = true;
 
             // TODO: Rework here
-            Texture2D texture = this.contentManager.Load<Texture2D>("Images/flake_0");
+            Texture2D texture = this.contentManager.Load<Texture2D>("Images/flake_" + (int)(Snowflake.random.NextDouble() * numTextures));
             this.basicEffect.Texture = texture;
         }
 
         public void Update()
         {
             this.basicEffect.View = this.camera.View;
-            position -= new Vector3(0, 0.01f, 0);
+            position -= new Vector3(0f, 0.01f, 0f);
             angle += 0.1f;
-            this.basicEffect.World = Matrix.CreateRotationY(angle) * Matrix.CreateTranslation(position);
+            this.basicEffect.World = /* Matrix.CreateRotationX(angle) */ Matrix.CreateTranslation(position);
         }
 
         public void Draw()

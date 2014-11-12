@@ -9,7 +9,8 @@ namespace ComputerGraphics.Objects
     public class Cloud
     {
         private List<Snowflake> snowflakes;
-        private Random random;
+        private int temperature = -1;   // TODO randomize
+        private static Random random = new Random();   // do not change to non staic member!
 
         public Cloud()
         {
@@ -18,12 +19,16 @@ namespace ComputerGraphics.Objects
 
         public void Initialize()
         {
-            this.random = new Random();
+            Cloud.random = new Random();
             this.snowflakes = new List<Snowflake>();
-
-            for (int i = 0; i < this.random.Next(0, 100); i++)
+           
+            for (int i = 0, numSnowflakes = Cloud.random.Next(0, 15000); i < numSnowflakes; i++)
             {
-                this.snowflakes.Add(new Snowflake(new Vector3(this.random.Next(0, 10), this.random.Next(0, 3), this.random.Next(0, 4))));
+                Vector3 vec;
+                vec.X = (float) Cloud.random.NextDouble() * 20f;
+                vec.Y = (float) Cloud.random.NextDouble() * 15f;
+                vec.Z = (float) Cloud.random.NextDouble() * 15f;
+                this.snowflakes.Add(new Snowflake(vec, temperature));
             }
         }
 
