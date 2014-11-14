@@ -11,8 +11,8 @@ namespace ComputerGraphics.Objects
     {        
         private static Random random = new Random();    // do not change to non staic member!
         private const int numTextures = 10;
-        
-        private Vector3 position;
+
+        public Vector3 Position { get; private set; }
         private Quad quad;
 
         private float fallRadius;        
@@ -57,7 +57,7 @@ namespace ComputerGraphics.Objects
             this.mass      = Snowflake.CalculateMass    (snowflakeTemperature, diameter);
             this.quad = new Quad(diameter);
 
-            this.position = position;
+            this.Position = position;
             this.Initialize();
         }
 
@@ -78,9 +78,9 @@ namespace ComputerGraphics.Objects
         public void Update()
         {
             this.basicEffect.View = this.camera.View;
-            position -= new Vector3(0f, this.mass, 0f); // not correct but a bit randomness
+            Position -= new Vector3(0f, this.mass, 0f); // not correct but a bit randomness
             angle += 0.1f;
-            this.basicEffect.World = /* Matrix.CreateRotationX(angle) */ Matrix.CreateTranslation(position);
+            this.basicEffect.World = /* Matrix.CreateRotationX(angle) */ Matrix.CreateTranslation(Position);
         }
 
         public void Draw()
