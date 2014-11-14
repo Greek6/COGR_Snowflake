@@ -30,6 +30,8 @@ namespace ComputerGraphics.Objects
                 vec.Z = (float) Cloud.random.NextDouble() * 15f;
                 this.snowflakes.Add(new Snowflake(vec, temperature));
             }
+
+            this.snowflakes = this.snowflakes.OrderBy(x => x.Position.Z).ToList();
         }
 
         public void Update()

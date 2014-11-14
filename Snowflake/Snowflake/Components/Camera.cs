@@ -27,7 +27,7 @@ namespace ComputerGraphics.Components
         {
             this.World = Matrix.CreateTranslation(0, 0, 0);
 
-            this.cameraMovementSpeed = 0.2f;
+            this.cameraMovementSpeed = 0.1f;
             this.cameraPosition = new Vector3(0, 0, 6);
             this.cameraLookAt = Vector3.Zero;
             this.cameraUpVector = Vector3.Up;

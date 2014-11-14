@@ -25,7 +25,11 @@ namespace ComputerGraphics
         {
             this.Content.RootDirectory = "Content";
 
-            ApplicationCore.Initialization(new GraphicsDeviceManager(this), this.Content, new Camera());
+            GraphicsDeviceManager graphicsDeviceManager = new GraphicsDeviceManager(this);
+            graphicsDeviceManager.PreferredBackBufferWidth = 800;
+            graphicsDeviceManager.PreferredBackBufferHeight = 480;
+            graphicsDeviceManager.PreferMultiSampling = true;
+            ApplicationCore.Initialization(graphicsDeviceManager, this.Content, new Camera());
         }
 
         /// <summary>
@@ -36,13 +40,13 @@ namespace ComputerGraphics
         /// </summary>
         protected override void Initialize()
         {
-            GraphicsDevice.BlendState = BlendState.AlphaBlend;
+            base.Initialize();
 
+            GraphicsDevice.BlendState = BlendState.AlphaBlend;
             RasterizerState rasterizerState = new RasterizerState();
             rasterizerState.CullMode = CullMode.None;
             GraphicsDevice.RasterizerState = rasterizerState;
-
-            base.Initialize();
+            GraphicsDevice.DepthStencilState = DepthStencilState.DepthRead;
         }
 
         /// <summary>
