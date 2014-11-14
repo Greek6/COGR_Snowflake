@@ -51,7 +51,7 @@ namespace ComputerGraphics.Objects
             return 4f / 3f * (float)Math.Pow(diameter / 2, 3) * (float)Math.PI;
         }
 
-        public Snowflake(Vector3 position, int snowflakeTemperature)
+        public Snowflake(Vector3 position, float snowflakeTemperature)
         {
             float diameter = Snowflake.CalculateDiameter(snowflakeTemperature);
             this.mass      = Snowflake.CalculateMass    (snowflakeTemperature, diameter);
