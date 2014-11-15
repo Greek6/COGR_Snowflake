@@ -70,7 +70,7 @@ namespace ComputerGraphics.Objects
             this.basicEffect.Projection = this.camera.Projection;
             this.basicEffect.TextureEnabled = true;
 
-            // TODO: Rework here
+            //Texture2D texture = this.contentManager.Load<Texture2D>("Mipmaps/Mipster-flake_0");
             Texture2D texture = this.contentManager.Load<Texture2D>("Images/flake_" + (int)(Snowflake.random.NextDouble() * numTextures));
             this.basicEffect.Texture = texture;
         }
