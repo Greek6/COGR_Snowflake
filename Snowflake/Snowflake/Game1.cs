@@ -19,6 +19,7 @@ namespace ComputerGraphics
         private SpriteBatch spriteBatch;
 
         private Cloud cloud;
+        private SkyBox skyBox;
  
         public Game1()
             : base()
@@ -58,6 +59,7 @@ namespace ComputerGraphics
             // Create a new SpriteBatch, which can be used to draw textures.
             this.spriteBatch = new SpriteBatch(ApplicationCore.Singleton.GraphicsDevice);
             this.cloud = new Cloud();
+            this.skyBox = new SkyBox(50f);
         }
 
         /// <summary>
@@ -80,6 +82,7 @@ namespace ComputerGraphics
 
             ApplicationCore.Singleton.Camera.Update();
             this.cloud.Update();
+            this.skyBox.Update();
 
             base.Update(gameTime);
         }
@@ -91,8 +94,9 @@ namespace ComputerGraphics
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
+            this.skyBox.Draw();
             this.cloud.Draw();
-            base.Draw(gameTime);
+            base.Draw(gameTime);            
         }
     }
 }

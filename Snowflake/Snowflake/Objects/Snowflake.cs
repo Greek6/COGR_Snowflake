@@ -80,7 +80,7 @@ namespace ComputerGraphics.Objects
             this.basicEffect.View = this.camera.View;
             Position -= new Vector3(0f, this.mass, 0f); // not correct but a bit randomness
             angle += 0.1f;
-            this.basicEffect.World = /* Matrix.CreateRotationX(angle) */ Matrix.CreateTranslation(Position);
+            this.basicEffect.World = /*Matrix.CreateRotationX(angle) +*/ Matrix.CreateTranslation(Position);
         }
 
         public void Draw()

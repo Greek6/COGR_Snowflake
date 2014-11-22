@@ -55,6 +55,7 @@
     <Compile Include="Infrastructure\ApplicationCore.cs" />
     <Compile Include="Objects\Cloud.cs" />
     <Compile Include="Objects\Quad.cs" />
+    <Compile Include="Objects\SkyBox.cs" />
     <Compile Include="Objects\Snowflake.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

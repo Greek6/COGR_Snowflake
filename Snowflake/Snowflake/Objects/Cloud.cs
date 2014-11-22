@@ -25,9 +25,9 @@ namespace ComputerGraphics.Objects
             for (int i = 0, numSnowflakes = Cloud.random.Next(0, 10000); i < numSnowflakes; i++)
             {
                 Vector3 vec;
-                vec.X = (float) Cloud.random.NextDouble() * 20f;
-                vec.Y = (float) Cloud.random.NextDouble() * 15f;
-                vec.Z = (float) Cloud.random.NextDouble() * 15f;
+                vec.X = (float) Cloud.random.NextDouble() * 50f - 25f;
+                vec.Y = (float) Cloud.random.NextDouble() * 50f;
+                vec.Z = (float) Cloud.random.NextDouble() * 50f - 25f;
                 this.snowflakes.Add(new Snowflake(vec, temperature));
             }
 
