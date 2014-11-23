@@ -58,6 +58,5 @@ namespace ComputerGraphics.Infrastructure
             camera = c;
             isInitialized = true;
         }
-
     }
 }

@@ -13,7 +13,14 @@ namespace ComputerGraphics.Objects
         private const int numTextures = 10;
 
         public Vector3 Position { get; private set; }
-        private Quad quad;
+
+
+        private readonly Quad quad;
+
+
+        private Vector3 velocity;
+        public static Vector3 windForce;
+        private const float gravitationalForce = -0.05f;
 
         private float fallRadius;        
         private float mass;
@@ -43,12 +50,12 @@ namespace ComputerGraphics.Objects
             float roh = 0.170f;
             if (temperature > -1f)
             {
-                roh = 0.740f;
+                roh = 0.724f;
             }
 
             // assumption:          snowflake is spherical
             // volume of sphere:    4/3 * r^3 * pi
-            return 4f / 3f * (float)Math.Pow(diameter / 2, 3) * (float)Math.PI;
+            return roh * 4f / 3f * (float)Math.Pow(diameter / 2, 3) * (float)Math.PI * 1000f /*mass in gramm*/;
         }
 
         public Snowflake(Vector3 position, float snowflakeTemperature)
@@ -58,6 +65,7 @@ namespace ComputerGraphics.Objects
             this.quad = new Quad(diameter);
 
             this.Position = position;
+            this.velocity = new Vector3(0f, -0.1f, 0f);
             this.Initialize();
         }
 
@@ -75,12 +83,58 @@ namespace ComputerGraphics.Objects
             this.basicEffect.Texture = texture;
         }
 
-        public void Update()
+        public void Update(GameTime gameTime)
         {
             this.basicEffect.View = this.camera.View;
-            Position -= new Vector3(0f, this.mass, 0f); // not correct but a bit randomness
-            angle += 0.1f;
-            this.basicEffect.World = /*Matrix.CreateRotationX(angle) +*/ Matrix.CreateTranslation(Position);
+            //Position -= new Vector3(0f, this.mass, 0f); // not correct but a bit randomness
+            //this.basicEffect.World = Matrix.CreateTranslation(Position);
+
+            float elapsedSeconds = gameTime.ElapsedGameTime.Milliseconds / 1000f;
+
+            this.velocity.X +=  Snowflake.windForce.X                       / this.mass * elapsedSeconds;
+            this.velocity.Y += (Snowflake.windForce.Y + gravitationalForce) / this.mass * elapsedSeconds;
+            this.velocity.Z +=  Snowflake.windForce.Z                       / this.mass * elapsedSeconds;            
+
+            Vector3 tmp = this.Position;
+            tmp.X += this.velocity.X * elapsedSeconds;
+            tmp.Y += this.velocity.Y * elapsedSeconds;
+            tmp.Z += this.velocity.Z * elapsedSeconds;
+
+            if (tmp.X < -12.5f)
+            {
+                tmp.X += 25f;
+                this.velocity.X = 0f;
+            }
+            if (tmp.X > 12.5f)
+            {
+                tmp.X -= 25f;
+                this.velocity.X = 0f;
+            }
+
+            if (tmp.Y < 0)
+            {
+                tmp.Y += 25f;
+                this.velocity.Y = -0.1f;
+            }
+            if (tmp.Y > 25)
+            {
+                tmp.Y -= 25f;
+                this.velocity.Y = -0.1f;
+            }
+
+            if (tmp.Z < -12.5f)
+            {
+                tmp.Z += 25f;
+                this.velocity.Z = 0f;
+            }
+            if (tmp.Z > 12.5f)
+            {
+                tmp.Z -= 25f;
+                this.velocity.Z = 0f;
+            }
+
+            this.Position = tmp;
+            this.basicEffect.World = Matrix.CreateTranslation(this.Position);
         }
 
         public void Draw()

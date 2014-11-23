@@ -144,6 +144,8 @@ namespace ComputerGraphics.Objects
         {
             for (int i = 0; i < 6; ++i)
             {
+                if (i == 4)
+                    continue;   // do not draw back
                 this.basicEffects[i].View = this.camera.View;
             }
         }

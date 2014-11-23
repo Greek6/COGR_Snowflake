@@ -20,15 +20,16 @@ namespace ComputerGraphics
 
         private Cloud cloud;
         private SkyBox skyBox;
+        private Vector3 windForce;
+        private const float keyAdjustment = 0.05f;
  
         public Game1()
             : base()
         {
             this.Content.RootDirectory = "Content";
-
             GraphicsDeviceManager graphicsDeviceManager = new GraphicsDeviceManager(this);
-            graphicsDeviceManager.PreferredBackBufferWidth = 800;
-            graphicsDeviceManager.PreferredBackBufferHeight = 480;
+            graphicsDeviceManager.PreferredBackBufferWidth  = 1600;
+            graphicsDeviceManager.PreferredBackBufferHeight =  900;
             graphicsDeviceManager.PreferMultiSampling = true;
             ApplicationCore.Initialization(graphicsDeviceManager, this.Content, new Camera());
         }
@@ -58,8 +59,10 @@ namespace ComputerGraphics
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             this.spriteBatch = new SpriteBatch(ApplicationCore.Singleton.GraphicsDevice);
+            this.windForce = new Vector3(0f, 0f, 0f);
+            Snowflake.windForce = this.windForce;
             this.cloud = new Cloud();
-            this.skyBox = new SkyBox(50f);
+            this.skyBox = new SkyBox(25f);
         }
 
         /// <summary>
@@ -79,9 +82,41 @@ namespace ComputerGraphics
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 this.Exit();
+            else if (Keyboard.GetState().IsKeyDown(Keys.X))
+            {
+                if (Keyboard.GetState().IsKeyDown(Keys.Up))
+                    this.windForce.X += Game1.keyAdjustment;
+                else if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                    this.windForce.X -= Game1.keyAdjustment;
+                else
+                    ;
+            }
+            else if (Keyboard.GetState().IsKeyDown(Keys.Y))
+            {
+                if (Keyboard.GetState().IsKeyDown(Keys.Up))
+                    this.windForce.Y += Game1.keyAdjustment;
+                else if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                    this.windForce.Y -= Game1.keyAdjustment;
+                else
+                    ;
+            }
+            else if (Keyboard.GetState().IsKeyDown(Keys.Z))
+            {
+                if (Keyboard.GetState().IsKeyDown(Keys.Up))
+                    this.windForce.Z += Game1.keyAdjustment;
+                else if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                    this.windForce.Z -= Game1.keyAdjustment;
+                else
+                    ;
+            }
+            else if (Keyboard.GetState().IsKeyDown(Keys.F1))
+                this.windForce = new Vector3(0f, 0f, 0f);
+            else ;
+
+            Snowflake.windForce = this.windForce;
 
             ApplicationCore.Singleton.Camera.Update();
-            this.cloud.Update();
+            this.cloud.Update(gameTime);
             this.skyBox.Update();
 
             base.Update(gameTime);
