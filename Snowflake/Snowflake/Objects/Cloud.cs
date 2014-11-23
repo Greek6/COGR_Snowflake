@@ -17,7 +17,7 @@ namespace ComputerGraphics.Objects
             Cloud.random = new Random();
             this.snowflakes = new List<Snowflake>();
 
-            for (int i = 0, numSnowflakes = 10000; i < numSnowflakes; i++)
+            for (int i = 0, numSnowflakes = 1000; i < numSnowflakes; i++)
             {
                 Vector3 vec;
                 vec.X = (float)Cloud.random.NextDouble() * 25 - 12.5f;

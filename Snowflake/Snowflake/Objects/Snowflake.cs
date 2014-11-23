@@ -18,9 +18,18 @@ namespace ComputerGraphics.Objects
         private readonly Quad quad;
 
 
-        private Vector3 velocity;
+
+        private double tornadoAngleIterator = Snowflake.random.NextDouble();
+        private const double tornadoForce = 10;
         public static Vector3 windForce;
+
+        public static Vector3 tornadoPosition;  // y represents the height of the tornado
+        public static bool tornadoMode = false;
+
+        private Vector3 velocity;
         private const float gravitationalForce = -0.05f;
+
+
 
         private float fallRadius;        
         private float mass;
@@ -62,26 +71,32 @@ namespace ComputerGraphics.Objects
         {
             float diameter = Snowflake.CalculateDiameter(snowflakeTemperature);
             this.mass      = Snowflake.CalculateMass    (snowflakeTemperature, diameter);
-            this.quad = new Quad(diameter);
 
-            this.Position = position;
-            this.velocity = new Vector3(0f, -0.1f, 0f);
-            this.Initialize();
-        }
-
-        private void Initialize()
-        {
             this.basicEffect = new BasicEffect(this.graphicsDevice);
 
             this.basicEffect.World = this.camera.World;
             this.basicEffect.View = this.camera.View;
             this.basicEffect.Projection = this.camera.Projection;
             this.basicEffect.TextureEnabled = true;
+            
+                        
+            if (Snowflake.random.NextDouble() < 0.5)
+            {
+                this.quad = new Quad(diameter * 2);
+                Texture2D texture = this.contentManager.Load<Texture2D>("Images/leaf_" + (int) (Snowflake.random.NextDouble()*numTextures));
+                this.basicEffect.Texture = texture;
+            }
+            else
+            {
+                this.quad = new Quad(diameter);
+                Texture2D texture = this.contentManager.Load<Texture2D>("Images/flake_" + (int)(Snowflake.random.NextDouble() * numTextures));
+                this.basicEffect.Texture = texture;
+            }
 
-            //Texture2D texture = this.contentManager.Load<Texture2D>("Mipmaps/Mipster-flake_0");
-            Texture2D texture = this.contentManager.Load<Texture2D>("Images/flake_" + (int)(Snowflake.random.NextDouble() * numTextures));
-            this.basicEffect.Texture = texture;
+            this.Position = position;
+            this.velocity = new Vector3(0f, -0.1f, 0f);
         }
+
 
         public void Update(GameTime gameTime)
         {
@@ -89,11 +104,72 @@ namespace ComputerGraphics.Objects
             //Position -= new Vector3(0f, this.mass, 0f); // not correct but a bit randomness
             //this.basicEffect.World = Matrix.CreateTranslation(Position);
 
+            if (Snowflake.tornadoMode == false)
+            {
+                this.StandardWindUpdate(gameTime);
+            }
+            else
+            {
+                this.TornadoUpdate(gameTime);
+            }
+            
+            this.basicEffect.World = Matrix.CreateTranslation(this.Position);
+        }
+
+        public void Draw()
+        {
+            this.graphicsDevice.SetVertexBuffer(this.quad.VertexBuffer);
+
+            foreach (EffectPass pass in this.basicEffect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+                this.graphicsDevice.DrawPrimitives(PrimitiveType.TriangleStrip, 0, 2);
+            }
+        }
+
+        private void TornadoUpdate(GameTime gameTime)
+        {           
+            // calculate game time in seconds
             float elapsedSeconds = gameTime.ElapsedGameTime.Milliseconds / 1000f;
 
-            this.velocity.X +=  Snowflake.windForce.X                       / this.mass * elapsedSeconds;
-            this.velocity.Y += (Snowflake.windForce.Y + gravitationalForce) / this.mass * elapsedSeconds;
-            this.velocity.Z +=  Snowflake.windForce.Z                       / this.mass * elapsedSeconds;            
+            // gravitational force will be ignored for simplicity
+            // calculate distance to tornado
+            float difference_x = Snowflake.tornadoPosition.X - this.Position.X;
+            float difference_z = Snowflake.tornadoPosition.Z - this.Position.Z;
+
+            double distance = Math.Sqrt((difference_x * difference_x) + (difference_z * difference_z));
+            double radius = this.Position.Y / 5 + 1;
+            if (distance < radius + 0.1)
+            {
+                // calculate new angle                
+                this.tornadoAngleIterator += elapsedSeconds / 2 * radius;
+                Vector3 temp = Position;
+                temp.X = (float)(Math.Cos(this.tornadoAngleIterator) * Snowflake.random.NextDouble() * radius);
+                temp.Z = (float)(Math.Sin(this.tornadoAngleIterator) * Snowflake.random.NextDouble() * radius);
+                this.Position = temp;
+                return;
+            }
+
+
+
+
+            // to calculate partial force it is required to calculate angles
+            // triangle:    x, z, distance      distance = hypotenuse
+            double angle_DisX = Math.Asin(difference_x / distance);
+            double angle_DisZ = Math.Asin(difference_z / distance);
+
+            // calculate force towards tornado
+            double force = 2 - Math.Log(Math.E, distance + 0.1) + this.Position.Y / Snowflake.tornadoPosition.Y;
+            force *= 4;
+            //force *= 10;
+
+            // calculate force in x and z direction
+            float force_x = (float)(Math.Sin(angle_DisX) * force);
+            float force_z = (float)(Math.Sin(angle_DisZ) * force);
+
+            this.velocity.X += force_x / this.mass * elapsedSeconds;
+            this.velocity.Z += force_z / this.mass * elapsedSeconds;
+            this.velocity.Y = 0f;
 
             Vector3 tmp = this.Position;
             tmp.X += this.velocity.X * elapsedSeconds;
@@ -134,18 +210,55 @@ namespace ComputerGraphics.Objects
             }
 
             this.Position = tmp;
-            this.basicEffect.World = Matrix.CreateTranslation(this.Position);
         }
 
-        public void Draw()
+        private void StandardWindUpdate(GameTime gameTime)
         {
-            this.graphicsDevice.SetVertexBuffer(this.quad.VertexBuffer);
+            float elapsedSeconds = gameTime.ElapsedGameTime.Milliseconds / 1000f;
 
-            foreach (EffectPass pass in this.basicEffect.CurrentTechnique.Passes)
+            this.velocity.X += Snowflake.windForce.X / this.mass * elapsedSeconds;
+            this.velocity.Y += (Snowflake.windForce.Y + gravitationalForce) / this.mass * elapsedSeconds;
+            this.velocity.Z += Snowflake.windForce.Z / this.mass * elapsedSeconds;
+
+            Vector3 tmp = this.Position;
+            tmp.X += this.velocity.X * elapsedSeconds;
+            tmp.Y += this.velocity.Y * elapsedSeconds;
+            tmp.Z += this.velocity.Z * elapsedSeconds;
+
+            if (tmp.X < -12.5f)
             {
-                pass.Apply();
-                this.graphicsDevice.DrawPrimitives(PrimitiveType.TriangleStrip, 0, 2);
+                tmp.X += 25f;
+                this.velocity.X = 0f;
             }
+            if (tmp.X > 12.5f)
+            {
+                tmp.X -= 25f;
+                this.velocity.X = 0f;
+            }
+
+            if (tmp.Y < 0)
+            {
+                tmp.Y += 25f;
+                this.velocity.Y = -0.1f;
+            }
+            if (tmp.Y > 25)
+            {
+                tmp.Y -= 25f;
+                this.velocity.Y = -0.1f;
+            }
+
+            if (tmp.Z < -12.5f)
+            {
+                tmp.Z += 25f;
+                this.velocity.Z = 0f;
+            }
+            if (tmp.Z > 12.5f)
+            {
+                tmp.Z -= 25f;
+                this.velocity.Z = 0f;
+            }
+
+            this.Position = tmp;
         }
     }
 }

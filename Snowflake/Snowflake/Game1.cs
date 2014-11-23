@@ -86,31 +86,32 @@ namespace ComputerGraphics
             {
                 if (Keyboard.GetState().IsKeyDown(Keys.Up))
                     this.windForce.X += Game1.keyAdjustment;
-                else if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                if (Keyboard.GetState().IsKeyDown(Keys.Down))
                     this.windForce.X -= Game1.keyAdjustment;
-                else
-                    ;
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.Y))
             {
                 if (Keyboard.GetState().IsKeyDown(Keys.Up))
                     this.windForce.Y += Game1.keyAdjustment;
-                else if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                if (Keyboard.GetState().IsKeyDown(Keys.Down))
                     this.windForce.Y -= Game1.keyAdjustment;
-                else
-                    ;
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.Z))
             {
                 if (Keyboard.GetState().IsKeyDown(Keys.Up))
                     this.windForce.Z += Game1.keyAdjustment;
-                else if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                if (Keyboard.GetState().IsKeyDown(Keys.Down))
                     this.windForce.Z -= Game1.keyAdjustment;
-                else
-                    ;
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.F1))
+            {
                 this.windForce = new Vector3(0f, 0f, 0f);
+            }
+            else if (Keyboard.GetState().IsKeyDown(Keys.F3))
+            {
+                Snowflake.tornadoMode = !Snowflake.tornadoMode;
+                Snowflake.tornadoPosition = new Vector3(0f, 25f, 0f);
+            }
             else ;
 
             Snowflake.windForce = this.windForce;
