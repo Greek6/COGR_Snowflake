@@ -1,11 +1,22 @@
 ﻿#region Using Statements
 using System;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading;
+using System.Threading.Tasks;
 using ComputerGraphics.Components;
 using ComputerGraphics.Infrastructure;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ComputerGraphics.Objects;
+using OpenTK.Input;
+using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
+using GamePad = Microsoft.Xna.Framework.Input.GamePad;
+using Keyboard = Microsoft.Xna.Framework.Input.Keyboard;
 
 #endregion
 
@@ -22,7 +33,10 @@ namespace ComputerGraphics
         private SkyBox skyBox;
         private Vector3 windForce;
         private const float keyAdjustment = 0.05f;
- 
+
+        private Microsoft.Xna.Framework.Input.Keys recentlyPressedKey;
+
+
         public Game1()
             : base()
         {
@@ -51,6 +65,53 @@ namespace ComputerGraphics
             GraphicsDevice.DepthStencilState = DepthStencilState.DepthRead;
         }
 
+        private void ConsoleInput()
+        {
+            const String data_file = "data.file";
+            String str;
+
+            while (true)
+            {
+                while (File.Exists(data_file) == false)
+                {
+                    Thread.Sleep(100);
+                }
+
+
+                StreamReader sr = new StreamReader(data_file);
+                str = sr.ReadLine();
+                sr.Close();
+
+                File.Delete(data_file);                
+
+                if (str == "wind")
+                {
+                    Snowflake.tornadoMode = false;
+                }
+                else if (str == "tornado")
+                {
+                    Snowflake.tornadoPosition = new Vector3(0f, 25f, 0f);
+                    Snowflake.tornadoMode = true;                    
+                }
+                else if (str.StartsWith("force x: "))
+                {
+                    float tmp = float.Parse(str.Substring(str.LastIndexOf(' ') + 1), CultureInfo.InvariantCulture);
+                    this.windForce.X = tmp;
+                }
+                else if (str.StartsWith("force y: "))
+                {
+                    float tmp = float.Parse(str.Substring(str.LastIndexOf(' ') + 1), CultureInfo.InvariantCulture);
+                    this.windForce.Y = tmp;
+                }
+                else if (str.StartsWith("force z: "))
+                {
+                    float tmp = float.Parse(str.Substring(str.LastIndexOf(' ') + 1), CultureInfo.InvariantCulture);
+                    this.windForce.Z = tmp;
+                }
+                else ;
+            }
+        }
+
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
@@ -63,6 +124,10 @@ namespace ComputerGraphics
             Snowflake.windForce = this.windForce;
             this.cloud = new Cloud();
             this.skyBox = new SkyBox(25f);
+
+            Thread t = new Thread(this.ConsoleInput);
+            t.IsBackground = true;
+            t.Start();
         }
 
         /// <summary>
@@ -73,35 +138,49 @@ namespace ComputerGraphics
         {
         }
 
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Update(GameTime gameTime)
+        private void handleKeyboardEvents()
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                this.Exit();
+                Process.GetCurrentProcess().Kill();
+
             else if (Keyboard.GetState().IsKeyDown(Keys.X))
             {
                 if (Keyboard.GetState().IsKeyDown(Keys.Up))
+                {
+                    this.recentlyPressedKey = Keys.Up;
                     this.windForce.X += Game1.keyAdjustment;
+                }
                 if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                {
+                    this.recentlyPressedKey = Keys.Down;
                     this.windForce.X -= Game1.keyAdjustment;
+                }
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.Y))
             {
                 if (Keyboard.GetState().IsKeyDown(Keys.Up))
+                {
+                    this.recentlyPressedKey = Keys.Up;
                     this.windForce.Y += Game1.keyAdjustment;
+                }
                 if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                {
+                    this.recentlyPressedKey = Keys.Down;
                     this.windForce.Y -= Game1.keyAdjustment;
+                }
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.Z))
             {
                 if (Keyboard.GetState().IsKeyDown(Keys.Up))
-                    this.windForce.Z += Game1.keyAdjustment;
+                {
+                    this.recentlyPressedKey = Keys.Up;
+                    this.windForce.Z += Game1.keyAdjustment;                    
+                }
                 if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                {
+                    this.recentlyPressedKey = Keys.Down;
                     this.windForce.Z -= Game1.keyAdjustment;
+                }
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.F1))
             {
@@ -109,11 +188,30 @@ namespace ComputerGraphics
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.F3))
             {
-                Snowflake.tornadoMode = !Snowflake.tornadoMode;
-                Snowflake.tornadoPosition = new Vector3(0f, 25f, 0f);
+                if (this.recentlyPressedKey != Keys.F3)
+                {
+                    this.recentlyPressedKey = Keys.F3;
+                    Snowflake.tornadoPosition = new Vector3(0f, 25f, 0f);
+                    Snowflake.tornadoMode = !Snowflake.tornadoMode;                    
+                }
             }
             else ;
 
+            if (this.recentlyPressedKey == Keys.F3 && Keyboard.GetState()[Keys.F3] == KeyState.Up)
+            {
+                this.recentlyPressedKey = Keys.None;
+            }
+            else ;
+        }
+
+        /// <summary>
+        /// Allows the game to run logic such as updating the world,
+        /// checking for collisions, gathering input, and playing audio.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        protected override void Update(GameTime gameTime)
+        {
+            this.handleKeyboardEvents();
             Snowflake.windForce = this.windForce;
 
             ApplicationCore.Singleton.Camera.Update();

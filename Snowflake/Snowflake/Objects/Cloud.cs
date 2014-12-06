@@ -9,7 +9,7 @@ namespace ComputerGraphics.Objects
     public class Cloud
     {
         private List<Snowflake> snowflakes;
-        private float temperature = -2;   // TODO randomize
+        private float temperature = -1;   // TODO randomize
         private static Random random = new Random();   // do not change to non staic member!
 
         public Cloud()

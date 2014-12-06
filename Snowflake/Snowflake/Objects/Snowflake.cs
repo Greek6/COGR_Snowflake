@@ -19,7 +19,7 @@ namespace ComputerGraphics.Objects
 
 
 
-        private double tornadoAngleIterator = Snowflake.random.NextDouble();
+        private double tornadoAngleIterator = Snowflake.random.NextDouble() * Math.PI * 2;
         private const double tornadoForce = 10;
         public static Vector3 windForce;
 
@@ -139,19 +139,20 @@ namespace ComputerGraphics.Objects
 
             double distance = Math.Sqrt((difference_x * difference_x) + (difference_z * difference_z));
             double radius = this.Position.Y / 5 + 1;
-            if (distance < radius + 0.1)
+            if (distance < radius + 0.1/* prevent uncorrect float values */)
             {
-                // calculate new angle                
-                this.tornadoAngleIterator += elapsedSeconds / 2 * radius;
+                // calculate new angle
+                this.tornadoAngleIterator += (elapsedSeconds / 2 * radius) * 10;
                 Vector3 temp = Position;
-                temp.X = (float)(Math.Cos(this.tornadoAngleIterator) * Snowflake.random.NextDouble() * radius);
-                temp.Z = (float)(Math.Sin(this.tornadoAngleIterator) * Snowflake.random.NextDouble() * radius);
+
+                double rand;
+                while ((rand = Snowflake.random.NextDouble()) < 0.5);
+
+                temp.X = (float)(Math.Cos(this.tornadoAngleIterator) * rand /*Snowflake.random.NextDouble()*/ * radius);
+                temp.Z = (float)(Math.Sin(this.tornadoAngleIterator) * rand /*Snowflake.random.NextDouble()*/ * radius);
                 this.Position = temp;
                 return;
             }
-
-
-
 
             // to calculate partial force it is required to calculate angles
             // triangle:    x, z, distance      distance = hypotenuse
@@ -160,7 +161,7 @@ namespace ComputerGraphics.Objects
 
             // calculate force towards tornado
             double force = 2 - Math.Log(Math.E, distance + 0.1) + this.Position.Y / Snowflake.tornadoPosition.Y;
-            force *= 4;
+            force /= this.Position.Y;
             //force *= 10;
 
             // calculate force in x and z direction
