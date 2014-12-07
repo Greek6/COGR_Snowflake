@@ -89,7 +89,7 @@ namespace ComputerGraphics.Objects
             else
             {
                 this.quad = new Quad(diameter);
-                Texture2D texture = this.contentManager.Load<Texture2D>("Mipster-flake_" + (int)(Snowflake.random.NextDouble() * numTextures));
+                Texture2D texture = this.contentManager.Load<Texture2D>("flake_" + (int)(Snowflake.random.NextDouble() * numTextures));
                 this.basicEffect.Texture = texture;
             }
 

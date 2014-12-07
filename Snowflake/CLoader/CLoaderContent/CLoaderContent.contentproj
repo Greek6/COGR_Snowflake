@@ -48,108 +48,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="flake_0.png">
-      <Name>flake_0</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="flake_1.png">
-      <Name>flake_1</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="flake_2.png">
-      <Name>flake_2</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="flake_3.png">
-      <Name>flake_3</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="flake_4.png">
-      <Name>flake_4</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="flake_5.png">
-      <Name>flake_5</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="flake_6.png">
-      <Name>flake_6</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="flake_7.png">
-      <Name>flake_7</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="flake_8.png">
-      <Name>flake_8</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="flake_9.png">
-      <Name>flake_9</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="leaf_0.png">
-      <Name>leaf_0</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="leaf_1.png">
-      <Name>leaf_1</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="leaf_2.png">
-      <Name>leaf_2</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="leaf_3.png">
-      <Name>leaf_3</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="leaf_4.png">
-      <Name>leaf_4</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="leaf_5.png">
-      <Name>leaf_5</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="leaf_6.png">
-      <Name>leaf_6</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="leaf_7.png">
-      <Name>leaf_7</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="leaf_8.png">
-      <Name>leaf_8</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="leaf_9.png">
-      <Name>leaf_9</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
     <Compile Include="skyBack.png">
       <Name>skyBack</Name>
       <Importer>TextureImporter</Importer>
@@ -182,53 +80,105 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Mipster-flake_0.dds">
-      <Name>Mipster-flake_0</Name>
+    <Compile Include="flake_0.dds">
+      <Name>flake_0</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Mipster-flake_1.dds">
-      <Name>Mipster-flake_1</Name>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="flake_1.dds">
+      <Name>flake_1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Mipster-flake_2.dds">
-      <Name>Mipster-flake_2</Name>
+    <Compile Include="flake_2.dds">
+      <Name>flake_2</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Mipster-flake_3.dds">
-      <Name>Mipster-flake_3</Name>
+    <Compile Include="flake_3.dds">
+      <Name>flake_3</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Mipster-flake_4.dds">
-      <Name>Mipster-flake_4</Name>
+    <Compile Include="flake_4.dds">
+      <Name>flake_4</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Mipster-flake_5.dds">
-      <Name>Mipster-flake_5</Name>
+    <Compile Include="flake_5.dds">
+      <Name>flake_5</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Mipster-flake_6.dds">
-      <Name>Mipster-flake_6</Name>
+    <Compile Include="flake_6.dds">
+      <Name>flake_6</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Mipster-flake_7.dds">
-      <Name>Mipster-flake_7</Name>
+    <Compile Include="flake_7.dds">
+      <Name>flake_7</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Mipster-flake_8.dds">
-      <Name>Mipster-flake_8</Name>
+    <Compile Include="flake_8.dds">
+      <Name>flake_8</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Mipster-flake_9.dds">
-      <Name>Mipster-flake_9</Name>
+    <Compile Include="flake_9.dds">
+      <Name>flake_9</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="leaf_0.dds">
+      <Name>leaf_0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="leaf_1.dds">
+      <Name>leaf_1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="leaf_2.dds">
+      <Name>leaf_2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="leaf_3.dds">
+      <Name>leaf_3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="leaf_4.dds">
+      <Name>leaf_4</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="leaf_5.dds">
+      <Name>leaf_5</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="leaf_6.dds">
+      <Name>leaf_6</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="leaf_7.dds">
+      <Name>leaf_7</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="leaf_8.dds">
+      <Name>leaf_8</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="leaf_9.dds">
+      <Name>leaf_9</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
