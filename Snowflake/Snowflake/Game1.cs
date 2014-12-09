@@ -58,7 +58,7 @@ namespace ComputerGraphics
         protected override void Initialize()
         {
             base.Initialize();
-            Song song = Content.Load<Song>("Audio/wind.wav");
+            Song song = Content.Load<Song>("wind.wav");
             MediaPlayer.Play(song);
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Volume = 0f;
