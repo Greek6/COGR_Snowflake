@@ -62,7 +62,7 @@ namespace ComputerGraphics.Objects
                         break;
                 }
                 #endregion
-                this.basicEffects[i].Texture = this.contentManager.Load<Texture2D>("Images/" + textureName);
+                this.basicEffects[i].Texture = this.contentManager.Load<Texture2D>(textureName);
             }
 
 

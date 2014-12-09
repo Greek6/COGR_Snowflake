@@ -83,13 +83,13 @@ namespace ComputerGraphics.Objects
             if (Snowflake.random.NextDouble() < 0.5)
             {
                 this.quad = new Quad(diameter * 2);
-                Texture2D texture = this.contentManager.Load<Texture2D>("Images/leaf_" + (int) (Snowflake.random.NextDouble()*numTextures));
+                Texture2D texture = this.contentManager.Load<Texture2D>("leaf_" + (int) (Snowflake.random.NextDouble()*numTextures));
                 this.basicEffect.Texture = texture;
             }
             else
             {
                 this.quad = new Quad(diameter);
-                Texture2D texture = this.contentManager.Load<Texture2D>("Images/flake_" + (int)(Snowflake.random.NextDouble() * numTextures));
+                Texture2D texture = this.contentManager.Load<Texture2D>("flake_" + (int)(Snowflake.random.NextDouble() * numTextures));
                 this.basicEffect.Texture = texture;
             }
 
