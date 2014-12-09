@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ComputerGraphics.Objects;
+using Microsoft.Xna.Framework.Media;
 using OpenTK.Input;
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
 using GamePad = Microsoft.Xna.Framework.Input.GamePad;
@@ -35,7 +36,7 @@ namespace ComputerGraphics
         private const float keyAdjustment = 0.05f;
 
         private Microsoft.Xna.Framework.Input.Keys recentlyPressedKey;
-
+        private const float maximumWindforceVolume = 20;
 
         public Game1()
             : base()
@@ -57,6 +58,10 @@ namespace ComputerGraphics
         protected override void Initialize()
         {
             base.Initialize();
+            Song song = Content.Load<Song>("Audio/wind.wav");
+            MediaPlayer.Play(song);
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Volume = 0f;
 
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
             RasterizerState rasterizerState = new RasterizerState();
@@ -213,6 +218,12 @@ namespace ComputerGraphics
         {
             this.handleKeyboardEvents();
             Snowflake.windForce = this.windForce;
+
+            // adjust wind volume
+            if (this.windForce.Length() >= Game1.maximumWindforceVolume)
+                MediaPlayer.Volume = 1f;
+            else
+                MediaPlayer.Volume = windForce.Length() / Game1.maximumWindforceVolume;
 
             ApplicationCore.Singleton.Camera.Update();
             this.cloud.Update(gameTime);
