@@ -29,7 +29,7 @@ namespace ComputerGraphics.Objects
         private Vector3 velocity;
         private const float gravitationalForce = -0.05f;
 
-
+        private bool showLeaf = false;
 
         private float fallRadius;        
         private float mass;
@@ -78,12 +78,11 @@ namespace ComputerGraphics.Objects
             this.basicEffect.View = this.camera.View;
             this.basicEffect.Projection = this.camera.Projection;
             this.basicEffect.TextureEnabled = true;
-            
-                        
-            if (Snowflake.random.NextDouble() < 0.5)
+
+            if (this.showLeaf)
             {
                 this.quad = new Quad(diameter * 2);
-                Texture2D texture = this.contentManager.Load<Texture2D>("leaf_" + (int) (Snowflake.random.NextDouble()*numTextures));
+                Texture2D texture = this.contentManager.Load<Texture2D>("leaf_" + (int)(Snowflake.random.NextDouble() * numTextures));
                 this.basicEffect.Texture = texture;
             }
             else
