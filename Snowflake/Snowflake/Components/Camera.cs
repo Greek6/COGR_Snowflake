@@ -18,12 +18,12 @@ namespace ComputerGraphics.Components
 
         private float cameraMovementSpeed;
 
-        public Camera()
+        public Camera(int applicationWidth, int applicationHeight)
         {
-            this.Initialize();
+            this.Initialize(applicationWidth, applicationHeight);
         }
 
-        private void Initialize()
+        private void Initialize(int applicationWidth, int applicationHeight)
         {
             this.World = Matrix.CreateTranslation(0, 0, 0);
 
@@ -36,7 +36,7 @@ namespace ComputerGraphics.Components
             // P2: The target towards which the camera is pointing.
             // P3: The direction that is "up" from the camera's point of view.
             this.View = Matrix.CreateLookAt(this.cameraPosition, this.cameraLookAt, this.cameraUpVector);
-            this.Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 800f / 480f, 0.01f, 100f); // TODO: calculate aspect ratio
+            this.Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), (float)applicationWidth / (float)applicationHeight, 0.01f, 1000f); // TODO: calculate aspect ratio
         }
 
         public void Update()
