@@ -86,7 +86,7 @@ namespace ComputerGraphics.Objects
 
 
             // front
-            vertices[0] = new VertexPositionNormalTexture(frontTopLeft    , Vector3.Backward, new Vector2(0, 0));
+            vertices[0] = new VertexPositionNormalTexture(new Vector3(frontBottomLeft.X - 0.00f, +length, -halfSideLength)  , Vector3.Backward, new Vector2(0, 0));
             vertices[1] = new VertexPositionNormalTexture(frontTopRight   , Vector3.Backward, new Vector2(1, 0));
             vertices[2] = new VertexPositionNormalTexture(frontBottomLeft , Vector3.Backward, new Vector2(0, 1));
             vertices[3] = new VertexPositionNormalTexture(frontBottomRight, Vector3.Backward, new Vector2(1, 1));
