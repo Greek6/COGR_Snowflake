@@ -34,6 +34,8 @@ namespace ComputerGraphics
         private SkyBox skyBox;
         private Vector3 windForce;
         private const float keyAdjustment = 0.05f;
+        private const int applicationWidth = 1600;
+        private const int applicationHeight = 900;
 
         private Microsoft.Xna.Framework.Input.Keys recentlyPressedKey;
         private const float maximumWindforceVolume = 20;
@@ -43,10 +45,10 @@ namespace ComputerGraphics
         {
             this.Content.RootDirectory = "Content";
             GraphicsDeviceManager graphicsDeviceManager = new GraphicsDeviceManager(this);
-            graphicsDeviceManager.PreferredBackBufferWidth  = 1600;
-            graphicsDeviceManager.PreferredBackBufferHeight =  900;
+            graphicsDeviceManager.PreferredBackBufferWidth = applicationWidth;
+            graphicsDeviceManager.PreferredBackBufferHeight = applicationHeight;
             graphicsDeviceManager.PreferMultiSampling = true;
-            ApplicationCore.Initialization(graphicsDeviceManager, this.Content, new Camera());
+            ApplicationCore.Initialization(graphicsDeviceManager, this.Content, new Camera(applicationWidth, applicationHeight));
         }
 
         /// <summary>
