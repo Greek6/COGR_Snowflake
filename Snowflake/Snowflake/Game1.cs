@@ -226,10 +226,11 @@ namespace ComputerGraphics
             Snowflake.windForce = this.windForce;
 
             // adjust wind volume
-            if (this.windForce.Length() >= Game1.maximumWindforceVolume)
+            float windForceLength = this.windForce.Length();
+            if (windForceLength >= Game1.maximumWindforceVolume)
                 MediaPlayer.Volume = 1f;
             else
-                MediaPlayer.Volume = windForce.Length() / Game1.maximumWindforceVolume;
+                MediaPlayer.Volume = windForceLength / Game1.maximumWindforceVolume;
 
             ApplicationCore.Singleton.Camera.Update();
             this.cloud.Update(gameTime);

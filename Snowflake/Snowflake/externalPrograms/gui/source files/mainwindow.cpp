@@ -12,9 +12,7 @@ std::mutex mutex;
 
 void sendData(std::string data){
     std::lock_guard<std::mutex> guard(mutex);
-    int counter = 0;
-
-    while(std::fstream(dataFile, std::fstream::in).good()){
+    for (int counter = 0; std::fstream(dataFile, std::fstream::in).good(); ++counter){
         std::this_thread::sleep_for(std::chrono::milliseconds(200));
         if (counter > 5)
             return;
