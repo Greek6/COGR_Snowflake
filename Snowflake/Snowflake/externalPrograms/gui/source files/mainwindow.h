@@ -37,6 +37,11 @@ private:
 
     bool m_StopProgram;
     void sinWatcher(std::string sendTag, const QCheckBox* cb, const int* value);
+
+
+    // TEST
+    std::thread m_SinusThread;
+    void sinWatcher_test();
 };
 
 #endif // MAINWINDOW_H

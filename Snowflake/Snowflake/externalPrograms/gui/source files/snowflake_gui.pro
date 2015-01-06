@@ -15,9 +15,11 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+        simplexnoise.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+         simplexnoise.h
 
 FORMS    += mainwindow.ui \
 

@@ -72,48 +72,52 @@ namespace ComputerGraphics
 
         private void ConsoleInput()
         {
-            const String data_file = "data.file";
+            const String dataFile = "data.file";
+            const int sleeptime = 200; // ms
             String str;
+            StreamReader sr;
 
             while (true)
             {
-                while (File.Exists(data_file) == false)
+                while (File.Exists(dataFile) == false)
                 {
-                    Thread.Sleep(100);
+                    Thread.Sleep(sleeptime);
                 }
 
+                sr = new StreamReader(dataFile);
+                while ((str = sr.ReadLine()) != null)
+                {
+                    if (str == "wind")
+                    {
+                        Snowflake.tornadoMode = false;
+                    }
+                    else if (str == "tornado")
+                    {
+                        Snowflake.tornadoPosition = new Vector3(0f, 25f, 0f);
+                        Snowflake.tornadoMode = true;                    
+                    }
+                    else if (str.StartsWith("force x: "))
+                    {
+                        float tmp = float.Parse(str.Substring(str.LastIndexOf(' ') + 1), CultureInfo.InvariantCulture);
+                        this.windForce.X = tmp;
+                    }
+                    else if (str.StartsWith("force y: "))
+                    {
+                        float tmp = float.Parse(str.Substring(str.LastIndexOf(' ') + 1), CultureInfo.InvariantCulture);
+                        this.windForce.Y = tmp;
+                    }
+                    else if (str.StartsWith("force z: "))
+                    {
+                        float tmp = float.Parse(str.Substring(str.LastIndexOf(' ') + 1), CultureInfo.InvariantCulture);
+                        this.windForce.Z = tmp;
+                    }
+                    else ;
+                }
 
-                StreamReader sr = new StreamReader(data_file);
-                str = sr.ReadLine();
                 sr.Close();
 
-                File.Delete(data_file);                
-
-                if (str == "wind")
-                {
-                    Snowflake.tornadoMode = false;
-                }
-                else if (str == "tornado")
-                {
-                    Snowflake.tornadoPosition = new Vector3(0f, 25f, 0f);
-                    Snowflake.tornadoMode = true;                    
-                }
-                else if (str.StartsWith("force x: "))
-                {
-                    float tmp = float.Parse(str.Substring(str.LastIndexOf(' ') + 1), CultureInfo.InvariantCulture);
-                    this.windForce.X = tmp;
-                }
-                else if (str.StartsWith("force y: "))
-                {
-                    float tmp = float.Parse(str.Substring(str.LastIndexOf(' ') + 1), CultureInfo.InvariantCulture);
-                    this.windForce.Y = tmp;
-                }
-                else if (str.StartsWith("force z: "))
-                {
-                    float tmp = float.Parse(str.Substring(str.LastIndexOf(' ') + 1), CultureInfo.InvariantCulture);
-                    this.windForce.Z = tmp;
-                }
-                else ;
+                File.Delete(dataFile);
+                Thread.Sleep(sleeptime);
             }
         }
 

@@ -50,7 +50,7 @@ namespace ComputerGraphics.Objects
                 toReturn = 0.015f * (float) Math.Pow(-temperature, -0.35f);
             }
 
-            return toReturn*(float) (Snowflake.random.NextDouble() + 0.5) * 10f /*decimeter meter*/;
+            return toReturn*(float) (Snowflake.random.NextDouble() + 0.5) * 12f /*decimeter meter*/;
         }
         
         private static float CalculateMass(float temperature, float diameter)
